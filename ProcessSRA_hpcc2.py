@@ -133,6 +133,12 @@ dump_command = "fastq-dump "+f_sra
 # print dump_command
 os.system(dump_command)
 
+print ("First fastQC")
+f_fastq = infile.split(".")[0]+".fastq1"
+print (infile, f_fastq)
+fastqc_command = "fastqc -f fastq "+ f_fastq
+os.system(fastqc_command)
+
 print ("Trimming reads")
 # Trim Reads
 f_fastq = infile.split(".")[0]+".fastq"
@@ -166,19 +172,24 @@ print ("    Deleting trimmed fastq file:")
 print ("    %s"%(f_fastq_trimmed))
 os.system("rm %s"%(f_fastq_trimmed))
 
+print ("Second fastQC")
+f_fastq2 = filtered_file
+fastqc_command = "fastqc -f fastq "+ f_fastq2
+os.system(fastqc_command)
+
 print ("Running TopHat")
 # Run tophat
-f_tophat_file = infile.split(".")[0]+".sra_tophat"
+f_tophat_file = infile.split(".")[0]+".sra_tophat" #naming file
 
 # if out_dir != "":
 	# f_tophat_file = out_dir+"/"+f_tophat_file
 
-tophat_command = "tophat2 -p %s -i %s -I %s -g %s -o %s %s %s" % (tophat_threads,min_intron_size,max_intron_size,max_multiHits,f_tophat_file,genome,filtered_file)
+tophat_command = "tophat2 -p %s -i %s -I %s -g %s -o %s %s %s" % (tophat_threads,min_intron_size,max_intron_size,max_multiHits,f_tophat_file,genome,filtered_file) #command
 print (tophat_command)
 os.system(tophat_command)
-print ("    Deleting filtered fastq file:")
+#print ("    Deleting filtered fastq file:")
 print ("    %s"%(filtered_file))
-os.system("rm %s"%(filtered_file))
+#os.system("rm %s"%(filtered_file))
 
 print ("Converting BAM to SAM")
 os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/bam2sam.py %s/accepted_hits.bam"%(f_tophat_file))
