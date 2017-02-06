@@ -159,58 +159,124 @@ else:
 
 print ("Trimming reads")
 # Trim Reads
-f_fastq = infile.split(".")[0]+".fastq"
-print (infile, f_fastq)
-f_fastq_trimmed =  infile.split(".")[0]+"trimmed.fastq"
+if PE==1:
+	f_fastq = infile.split(".")[0]+"_1.fastq"
+	r_fastq = infile.split(".")[0]+"_2.fastq"
+	print (infile, f_fastq, r_fastq)
+	f_fastq_trimmedP =  infile.split(".")[0]+"_1trimmed.fastq"
+	r_fastq_trimmedP =  infile.split(".")[0]+"_2trimmed.fastq"
+	f_fastq_trimmedU =  infile.split(".")[0]+"_1Utrimmed.fastq"
+	r_fastq_trimmedU =  infile.split(".")[0]+"_2Utrimmed.fastq"
+	trimmomatic_command = "java -jar $TRIM/trimmomatic PE -threads %s %s %s %s %s %s %s " % (trim_threads,f_fastq,r_fastq, f_fastq_trimmedP, f_fastq_trimmedU, r_fastq_trimmedP, r_fastq_trimmedU)
+	trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/home/uygunsah/1_Expression_Database/RNAseq/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
+	trimmomatic_command = trimmomatic_command + "LEADING:%s TRAILING:%s SLIDINGWINDOW:%s:%s" % (leading,trailing,window_size,window_quality)
+	if not trim_minlen == 0:
+		trimmomatic_command = trimmomatic_command + " MINLEN:%s" (trim_minlen)
+	if not trim_crop == 0:
+		trimmomatic_command = trimmomatic_command + " CROP:%s" (trim_crop)
+	if not trim_headcrop == 0:
+		trimmomatic_command = trimmomatic_command + " HEADCROP:%s" (trim_headcrop)
+	os.system(trimmomatic_command)
+	print ("    Deleting original fastq file:")
+	print ("    %s"%(f_fastq))
+	os.system("rm %s"%(f_fastq))
+	os.system("rm %s"%(r_fastq))
+	print ("Filtering trimmed reads")
+	# Filter trimmed reads
+	filter_command1 = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(f_fastq_trimmedP,min_filter_len,min_filter_phred)
+	filter_command2 = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(r_fastq_trimmedP,min_filter_len,min_filter_phred)
 
-trimmomatic_command = "java -jar $TRIM/trimmomatic SE -threads %s %s %s " % (trim_threads,f_fastq,f_fastq_trimmed)
-trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/home/lloydjo1/scripts/A_Small_Read_Processing/Trimming_seqs/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
-trimmomatic_command = trimmomatic_command + "LEADING:%s TRAILING:%s SLIDINGWINDOW:%s:%s" % (leading,trailing,window_size,window_quality)
-if not trim_minlen == 0:
-	trimmomatic_command = trimmomatic_command + " MINLEN:%s" (trim_minlen)
-if not trim_crop == 0:
-	trimmomatic_command = trimmomatic_command + " CROP:%s" (trim_crop)
-if not trim_headcrop == 0:
-	trimmomatic_command = trimmomatic_command + " HEADCROP:%s" (trim_headcrop)
+	# print filter_command
+	os.system(filter_command1)
+	os.system(filter_command2)
+	# filtered_file = f_fastq_trimmed.replace("fastq","")+str(min_filter_len)+"_min_len."+str(min_filter_len)+"_min_phred.fastq"
+	filtered_file1 = f_fastq_trimmedP.replace(".fastq","")+"_1.filtered.fastq"
+	filtered_file2 = r_fastq_trimmedP.replace(".fastq","")+"_2.filtered.fastq"
+	print ("    Deleting trimmed fastq file:")
+	print ("    %s"%(f_fastq_trimmed))
+	os.system("rm %s"%(f_fastq_trimmedP))
+	os.system("rm %s"%(f_fastq_trimmedP))
 
-# print trimmomatic_command
-os.system(trimmomatic_command)
-print ("    Deleting original fastq file:")
-print ("    %s"%(f_fastq))
-os.system("rm %s"%(f_fastq))
+	print ("Second fastQC")
+	f_fastq2 = filtered_file1
+	r_fastq2 = filtered_file2
+	fastqc_command1 = "fastqc -f fastq "+ f_fastq2
+	fastqc_command2 = "fastqc -f fastq "+ r_fastq2
+	os.system(fastqc_command1)
+	os.system(fastqc_command2)
+	print ("Running TopHat")
+	# Run tophat
+	f_tophat_file = infile.split(".")[0]+".sra_tophat" #naming file
 
-print ("Filtering trimmed reads")
-# Filter trimmed reads
-filter_command = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(f_fastq_trimmed,min_filter_len,min_filter_phred)
-# print filter_command
-os.system(filter_command)
-# filtered_file = f_fastq_trimmed.replace("fastq","")+str(min_filter_len)+"_min_len."+str(min_filter_len)+"_min_phred.fastq"
-filtered_file = f_fastq_trimmed.replace(".fastq","")+".filtered.fastq"
-print ("    Deleting trimmed fastq file:")
-print ("    %s"%(f_fastq_trimmed))
-os.system("rm %s"%(f_fastq_trimmed))
+	# if out_dir != "":
+		# f_tophat_file = out_dir+"/"+f_tophat_file
 
-print ("Second fastQC")
-f_fastq2 = filtered_file
-fastqc_command = "fastqc -f fastq "+ f_fastq2
-os.system(fastqc_command)
+	tophat_command = "tophat2 -p %s -i %s -I %s -g %s -o %s %s %s" % (tophat_threads,min_intron_size,max_intron_size,max_multiHits,f_tophat_file,genome,filtered_file1, filtered_file2) #command
+	print (tophat_command)
+	os.system(tophat_command)
+	#print ("    Deleting filtered fastq file:")
+	print ("    %s"%(filtered_file))
+	#os.system("rm %s"%(filtered_file))
 
-print ("Running TopHat")
-# Run tophat
-f_tophat_file = infile.split(".")[0]+".sra_tophat" #naming file
+	print ("Converting BAM to SAM")
+	os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/bam2sam.py %s/accepted_hits.bam"%(f_tophat_file))
 
-# if out_dir != "":
-	# f_tophat_file = out_dir+"/"+f_tophat_file
+	print ("Filtering SAM to primary and unique reads")
+	os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/primary_and_unique_mapped_reads.py %s/accepted_hits.sam"%(f_tophat_file))
 
-tophat_command = "tophat2 -p %s -i %s -I %s -g %s -o %s %s %s" % (tophat_threads,min_intron_size,max_intron_size,max_multiHits,f_tophat_file,genome,filtered_file) #command
-print (tophat_command)
-os.system(tophat_command)
-#print ("    Deleting filtered fastq file:")
-print ("    %s"%(filtered_file))
-#os.system("rm %s"%(filtered_file))
+else:
+	f_fastq = infile.split(".")[0]+".fastq"
+	print (infile, f_fastq)
+	f_fastq_trimmed =  infile.split(".")[0]+"trimmed.fastq"
 
-print ("Converting BAM to SAM")
-os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/bam2sam.py %s/accepted_hits.bam"%(f_tophat_file))
+	trimmomatic_command = "java -jar $TRIM/trimmomatic SE -threads %s %s %s " % (trim_threads,f_fastq,f_fastq_trimmed)
+	trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/home/uygunsah/1_Expression_Database/RNAseq/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
+	trimmomatic_command = trimmomatic_command + "LEADING:%s TRAILING:%s SLIDINGWINDOW:%s:%s" % (leading,trailing,window_size,window_quality)
+	if not trim_minlen == 0:
+		trimmomatic_command = trimmomatic_command + " MINLEN:%s" (trim_minlen)
+	if not trim_crop == 0:
+		trimmomatic_command = trimmomatic_command + " CROP:%s" (trim_crop)
+	if not trim_headcrop == 0:
+		trimmomatic_command = trimmomatic_command + " HEADCROP:%s" (trim_headcrop)
 
-print ("Filtering SAM to primary and unique reads")
-os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/primary_and_unique_mapped_reads.py %s/accepted_hits.sam"%(f_tophat_file))
+	# print trimmomatic_command
+	os.system(trimmomatic_command)
+	print ("    Deleting original fastq file:")
+	print ("    %s"%(f_fastq))
+	os.system("rm %s"%(f_fastq))
+
+	print ("Filtering trimmed reads")
+	# Filter trimmed reads
+	filter_command = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(f_fastq_trimmed,min_filter_len,min_filter_phred)
+	# print filter_command
+	os.system(filter_command)
+	# filtered_file = f_fastq_trimmed.replace("fastq","")+str(min_filter_len)+"_min_len."+str(min_filter_len)+"_min_phred.fastq"
+	filtered_file = f_fastq_trimmed.replace(".fastq","")+".filtered.fastq"
+	print ("    Deleting trimmed fastq file:")
+	print ("    %s"%(f_fastq_trimmed))
+	os.system("rm %s"%(f_fastq_trimmed))
+
+	print ("Second fastQC")
+	f_fastq2 = filtered_file
+	fastqc_command = "fastqc -f fastq "+ f_fastq2
+	os.system(fastqc_command)
+
+	print ("Running TopHat")
+	# Run tophat
+	f_tophat_file = infile.split(".")[0]+".sra_tophat" #naming file
+
+	# if out_dir != "":
+		# f_tophat_file = out_dir+"/"+f_tophat_file
+
+	tophat_command = "tophat2 -p %s -i %s -I %s -g %s -o %s %s %s" % (tophat_threads,min_intron_size,max_intron_size,max_multiHits,f_tophat_file,genome,filtered_file) #command
+	print (tophat_command)
+	os.system(tophat_command)
+	#print ("    Deleting filtered fastq file:")
+	print ("    %s"%(filtered_file))
+	#os.system("rm %s"%(filtered_file))
+
+	print ("Converting BAM to SAM")
+	os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/bam2sam.py %s/accepted_hits.bam"%(f_tophat_file))
+
+	print ("Filtering SAM to primary and unique reads")
+	os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/primary_and_unique_mapped_reads.py %s/accepted_hits.sam"%(f_tophat_file))
