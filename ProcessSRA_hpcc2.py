@@ -217,7 +217,7 @@ if PE==1:
 	print (tophat_command)
 	os.system(tophat_command)
 	#print ("    Deleting filtered fastq file:")
-	print ("    %s"%(filtered_file))
+	print ("    %s"%(filtered_file1))
 	#os.system("rm %s"%(filtered_file))
 
 	print ("Converting BAM to SAM")
