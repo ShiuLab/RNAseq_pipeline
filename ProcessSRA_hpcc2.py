@@ -171,11 +171,11 @@ if PE==1:
 	trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/home/uygunsah/1_Expression_Database/RNAseq/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
 	trimmomatic_command = trimmomatic_command + "LEADING:%s TRAILING:%s SLIDINGWINDOW:%s:%s" % (leading,trailing,window_size,window_quality)
 	if not trim_minlen == 0:
-		trimmomatic_command = trimmomatic_command + " MINLEN:%s" (trim_minlen)
+		trimmomatic_command = trimmomatic_command + " MINLEN:%s" % (trim_minlen)
 	if not trim_crop == 0:
-		trimmomatic_command = trimmomatic_command + " CROP:%s" (trim_crop)
+		trimmomatic_command = trimmomatic_command + " CROP:%s" % (trim_crop)
 	if not trim_headcrop == 0:
-		trimmomatic_command = trimmomatic_command + " HEADCROP:%s" (trim_headcrop)
+		trimmomatic_command = trimmomatic_command + " HEADCROP:%s" % (trim_headcrop)
 	os.system(trimmomatic_command)
 	print ("    Deleting original fastq file:")
 	print ("    %s"%(f_fastq))
@@ -190,12 +190,14 @@ if PE==1:
 	os.system(filter_command1)
 	os.system(filter_command2)
 	# filtered_file = f_fastq_trimmed.replace("fastq","")+str(min_filter_len)+"_min_len."+str(min_filter_len)+"_min_phred.fastq"
-	filtered_file1 = f_fastq_trimmedP.replace(".fastq","")+"_1.filtered.fastq"
-	filtered_file2 = r_fastq_trimmedP.replace(".fastq","")+"_2.filtered.fastq"
+	filtered_file1 = f_fastq_trimmedP.replace(".fastq","")+".filtered.fastq"
+	filtered_file2 = r_fastq_trimmedP.replace(".fastq","")+".filtered.fastq"
 	print ("    Deleting trimmed fastq file:")
-	print ("    %s"%(f_fastq_trimmed))
+	print ("    %s"%(f_fastq_trimmedP))
 	os.system("rm %s"%(f_fastq_trimmedP))
-	os.system("rm %s"%(f_fastq_trimmedP))
+	os.system("rm %s"%(r_fastq_trimmedP))
+        os.system("rm %s"%(f_fastq_trimmedU))
+        os.system("rm %s"%(r_fastq_trimmedU))
 
 	print ("Second fastQC")
 	f_fastq2 = filtered_file1
@@ -211,7 +213,7 @@ if PE==1:
 	# if out_dir != "":
 		# f_tophat_file = out_dir+"/"+f_tophat_file
 
-	tophat_command = "tophat2 -p %s -i %s -I %s -g %s -o %s %s %s" % (tophat_threads,min_intron_size,max_intron_size,max_multiHits,f_tophat_file,genome,filtered_file1, filtered_file2) #command
+	tophat_command = "tophat2 -p %s -i %s -I %s -g %s -o %s %s %s %s" % (tophat_threads,min_intron_size,max_intron_size,max_multiHits,f_tophat_file,genome,filtered_file1, filtered_file2) #command
 	print (tophat_command)
 	os.system(tophat_command)
 	#print ("    Deleting filtered fastq file:")
