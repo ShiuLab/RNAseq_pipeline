@@ -49,7 +49,7 @@ Required Modules:
 ## READ INPUT SRA
 infile = os.path.abspath(sys.argv[1])
 genome = sys.argv[2]
-PE = sys.argv[3]
+PE = int(sys.argv[3])
 
 ## PRESET VALUES
 
