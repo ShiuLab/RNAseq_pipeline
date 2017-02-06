@@ -6,6 +6,7 @@ import os
 print ('''
 inp1 = .sra file
 inp2 = bowtie index root name
+inp3 = paired (1) or single reads (0)
 
 Optional Inputs:
 	-trim_threads = threads to use when running Trimmomatic (note: the actual number of threads used will be 1 + this value)
@@ -48,14 +49,19 @@ Required Modules:
 ## READ INPUT SRA
 infile = os.path.abspath(sys.argv[1])
 genome = sys.argv[2]
+PE = sys.argv[3]
 
 ## PRESET VALUES
 
 # out_dir = ""
 
-# Trimmomatic Parameters-- Always used
+# Trimmomatic Parameters-- Always used 
+# updating adapter_seq to include all universal adaptors, need to have these in wd
+if PE == 1:
+	adapter_seq = "all_PE_adapters.fa"
+else:
+	adapter_seq = "all_SE_adapters.fa"
 trim_threads = 4
-adapter_seq = "TruSeq3-SE.fa"
 seed_mismatches = 2 
 palindrome_clip = 30
 simple_clip = 10
@@ -129,15 +135,27 @@ for i in range(len(sys.argv)):
 # Decompress SRA Files
 f_sra = infile
 print ("Dumping SRA file")
-dump_command = "fastq-dump "+f_sra
+if PE == 1:
+	dump_command = "fastq-dump --split-files "+f_sra
+else:
+	dump_command = "fastq-dump "+f_sra
 # print dump_command
 os.system(dump_command)
 
 print ("First fastQC")
-f_fastq = infile.split(".")[0]+".fastq1"
-print (infile, f_fastq)
-fastqc_command = "fastqc -f fastq "+ f_fastq
-os.system(fastqc_command)
+if PE == 1:
+	f_fastq = infile.split(".")[0]+"_1.fastq"
+	r_fastq = infile.split(".")[0]+"_2.fastq"
+	print (infile, f_fastq, r_fastq)
+	fastqc_command1 = "fastqc -f fastq "+ f_fastq
+	fastqc_command2 = "fastqc -f fastq "+ r_fastq
+	os.system(fastqc_command1)
+	os.system(fastqc_command2)
+else:
+	f_fastq = infile.split(".")[0]+".fastq"
+	print (infile, f_fastq)
+	fastqc_command = "fastqc -f fastq "+ f_fastq
+	os.system(fastqc_command)
 
 print ("Trimming reads")
 # Trim Reads
