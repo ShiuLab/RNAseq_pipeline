@@ -235,11 +235,11 @@ else:
 	trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/home/uygunsah/1_Expression_Database/RNAseq/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
 	trimmomatic_command = trimmomatic_command + "LEADING:%s TRAILING:%s SLIDINGWINDOW:%s:%s" % (leading,trailing,window_size,window_quality)
 	if not trim_minlen == 0:
-		trimmomatic_command = trimmomatic_command + " MINLEN:%s" (trim_minlen)
+		trimmomatic_command = trimmomatic_command + " MINLEN:%s" % (trim_minlen)
 	if not trim_crop == 0:
-		trimmomatic_command = trimmomatic_command + " CROP:%s" (trim_crop)
+		trimmomatic_command = trimmomatic_command + " CROP:%s" % (trim_crop)
 	if not trim_headcrop == 0:
-		trimmomatic_command = trimmomatic_command + " HEADCROP:%s" (trim_headcrop)
+		trimmomatic_command = trimmomatic_command + " HEADCROP:%s" % (trim_headcrop)
 
 	# print trimmomatic_command
 	os.system(trimmomatic_command)
