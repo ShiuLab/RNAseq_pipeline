@@ -2,10 +2,10 @@ import os,sys
 # MAIN
 print('''
 
-inp1 = full path folder including tophat files
-inp2 = full path gff file
-inp3 = full path genome.fa file
-inp4 = full path directory to work
+inp1 = folder including tophat directories
+inp2 = gff file
+inp3 = genome.fa file
+inp4 = directory to work
 
 ''')
 inp1 = sys.argv[1] #folder including tophat files
