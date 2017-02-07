@@ -19,8 +19,8 @@ Optional Inputs:
 	-trim_winsize = window size for soft clipping
 	-trim_winqual = average quality for soft clipping
 	-trim_minlen = minimum length of trimmed reads
-	-trim_crop = fixed number of bases to trim from the front of all reads
-	-trim_hcrop = fixed number of bases to trim form the end of all reads
+	-trim_crop = fixed number of bases to trim from the end of all reads
+	-trim_hcrop = fixed number of bases to trim form the front of all reads
 	-tophat_threads = number of threads to use with tophat 
 	-min_intron = minimum intron size to use with tophat and cufflinks, default = 50
 	-max_intron = maximum intron size to use with tophat and cufflinks, default = 5000
