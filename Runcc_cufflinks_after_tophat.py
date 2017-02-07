@@ -3,9 +3,9 @@ import os,sys
 print('''
 
 inp1 = folder including tophat directories
-inp2 = gff file
-inp3 = genome.fa file
-inp4 = directory to work
+inp2 = gff file (/mnt/home/john3784/2-specialized_metab_project/Solanaceae/Slycopersicum/GCA_000188115.2_SL2.50_genomic.gff)
+inp3 = genome.fa file (/mnt/home/john3784/2-specialized_metab_project/Solanaceae/Slycopersicum/GCA_000188115.2_SL2.50_genomic.fna)
+inp4 = directory to output
 
 ''')
 inp1 = sys.argv[1] #folder including tophat files
