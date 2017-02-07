@@ -21,6 +21,6 @@ oup = open("runcc_cufflinks", "w")
 
 for file in os.listdir(inp1):
     if file.endswith(".sra_tophat"):
-        oup.write("module load cufflinks; cufflinks -p 1 -I 5000 -o %s_cufflinks -G %s -b %s %s/accepted_hits.unique.sam" %(file, inp2, inp3, file))
+        oup.write("module load cufflinks; cufflinks -p 1 -I 5000 -o %s_cufflinks -G %s -b %s %s/accepted_hits.unique.sam\n" %(file, inp2, inp3, file))
 
 oup.close()   
