@@ -85,4 +85,19 @@ HTseq count [to get counts of reads to each gene or exon] -> Edge R -> different
 2) qsub runcc file
 
     python ~john3784/Github/parse_scripts/qsub_hpc.py -f submit -c SE_SRA_files.txt.runcc -wd /mnt/scratch/john3784/RNA_seq/SE_SRA_files/ -m 10 -w 239
+    
+# Check for % reads mapped
+
+1) This script checks for mapping that is less than 80% and gives a file with a list of sra files that did not meet the 80% cutoff. You
+
+    can look at the fastQC of these files and try rerunning them. May need to remove bases at the beginning of the reads (-trim_hcrop
+    
+    <number of bases to remove> option) or add overrepresented sequences to the adapter sequence (-trim_adapter <file with adapters and
+    
+    over-represented sequences> option)
+
+
+        python get_bad_mapping_files <dir with _tophat directories>
+        
+        python ~john3784/Github/RNAseq_pipeline/get_bad_mapping_files.py /mnt/scratch/john3784/RNA_seq/SE_SRA_files/
    
