@@ -1,7 +1,7 @@
 import os,sys
 # MAIN
 print('''
-
+!USE ONLY FOR SE!, PE needs some edits
 inp1 = folder including tophat directories
 inp2 = gff file (/mnt/scratch/peipeiw/tomato_transcriptome/Solanum_lycopersicum_GCF_000188115.3_S.lycopersicum.2.50_genomic.gff)
 inp3 = genome.fa file (/mnt/scratch/peipeiw/tomato_transcriptome/Solanum_lycopersicum_GCF_000188115.3_SL2.50_genomic.fna)
