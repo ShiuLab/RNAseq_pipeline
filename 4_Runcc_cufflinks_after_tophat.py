@@ -3,8 +3,8 @@ import os,sys
 print('''
 
 inp1 = folder including tophat directories
-inp2 = gff file (/mnt/home/john3784/2-specialized_metab_project/Solanaceae/Slycopersicum/GCA_000188115.2_SL2.50_genomic.gff)
-inp3 = genome.fa file (/mnt/home/john3784/2-specialized_metab_project/Solanaceae/Slycopersicum/GCA_000188115.2_SL2.50_genomic.fna)
+inp2 = gff file (/mnt/scratch/peipeiw/tomato_transcriptome/Solanum_lycopersicum_GCF_000188115.3_S.lycopersicum.2.50_genomic.gff)
+inp3 = genome.fa file (/mnt/scratch/peipeiw/tomato_transcriptome/Solanum_lycopersicum_GCF_000188115.3_SL2.50_genomic.fna)
 inp4 = directory to output
 
 ''')
