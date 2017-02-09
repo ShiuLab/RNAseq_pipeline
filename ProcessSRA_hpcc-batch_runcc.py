@@ -15,7 +15,7 @@ inp3 and on:
 files = sys.argv[1]
 bowtie_index = sys.argv[2]
 SE = sys.argv[3]
-out_cmd = "module load SRAToolkit; module load Trimmomatic; \
+out_cmd = "module load SRAToolkit; module load FastQC; module load Trimmomatic; \
 module load TopHat2; module load Boost; module load SAMtools; module load python; \
 python /mnt/home/john3784/Github/RNAseq_pipeline/\
 ProcessSRA_hpcc2.py %s %s %s"
