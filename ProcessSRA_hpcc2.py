@@ -19,8 +19,8 @@ Optional Inputs:
 	-trim_winsize = window size for soft clipping
 	-trim_winqual = average quality for soft clipping
 	-trim_minlen = minimum length of trimmed reads
-	-trim_crop = fixed number of bases to trim from the front of all reads
-	-trim_hcrop = fixed number of bases to trim form the end of all reads
+	-trim_crop = fixed number of bases to trim from the end of all reads
+	-trim_hcrop = fixed number of bases to trim form the front of all reads
 	-tophat_threads = number of threads to use with tophat 
 	-min_intron = minimum intron size to use with tophat and cufflinks, default = 50
 	-max_intron = maximum intron size to use with tophat and cufflinks, default = 5000
@@ -168,7 +168,7 @@ if PE==1:
 	f_fastq_trimmedU =  infile.split(".")[0]+"_1Utrimmed.fastq"
 	r_fastq_trimmedU =  infile.split(".")[0]+"_2Utrimmed.fastq"
 	trimmomatic_command = "java -jar $TRIM/trimmomatic PE -threads %s %s %s %s %s %s %s " % (trim_threads,f_fastq,r_fastq, f_fastq_trimmedP, f_fastq_trimmedU, r_fastq_trimmedP, r_fastq_trimmedU)
-	trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/home/uygunsah/1_Expression_Database/RNAseq/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
+	trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/research/ShiuLab/16_RNAseq/adapters/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
 	trimmomatic_command = trimmomatic_command + "LEADING:%s TRAILING:%s SLIDINGWINDOW:%s:%s" % (leading,trailing,window_size,window_quality)
 	if not trim_minlen == 0:
 		trimmomatic_command = trimmomatic_command + " MINLEN:%s" % (trim_minlen)
@@ -232,7 +232,7 @@ else:
 	f_fastq_trimmed =  infile.split(".")[0]+"trimmed.fastq"
 
 	trimmomatic_command = "java -jar $TRIM/trimmomatic SE -threads %s %s %s " % (trim_threads,f_fastq,f_fastq_trimmed)
-	trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/home/uygunsah/1_Expression_Database/RNAseq/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
+	trimmomatic_command = trimmomatic_command + "ILLUMINACLIP:/mnt/research/ShiuLab/16_RNAseq/adapters/%s:%s:%s:%s " % (adapter_seq,seed_mismatches,palindrome_clip,simple_clip)
 	trimmomatic_command = trimmomatic_command + "LEADING:%s TRAILING:%s SLIDINGWINDOW:%s:%s" % (leading,trailing,window_size,window_quality)
 	if not trim_minlen == 0:
 		trimmomatic_command = trimmomatic_command + " MINLEN:%s" % (trim_minlen)
