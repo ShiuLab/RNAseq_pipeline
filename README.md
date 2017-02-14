@@ -93,4 +93,17 @@ HTseq count [to get counts of reads to each gene or exon] -> Edge R -> different
         python get_bad_mapping_files <dir with _tophat directories>
         
         python ~john3784/Github/RNAseq_pipeline/get_bad_mapping_files.py /mnt/scratch/john3784/RNA_seq/SE_SRA_files/
+  
+
+# Get Ht-seq and cufflinks output
+
+1) python 4_Runcc_cufflinks_after_tophat.py [folder including tophat directories] [gff file] [genome.fa file] [SE (0) or PE (1)]
+   
+   **note PE option requires module load samtools
+   
+   **PE may take a while depending on how many files you have, so consider submitting to the queue with qsub
+   
+   output is a cufflinks/htseq runcc file
+   
+2) submit cufflinks/htseq runcc file to the queue with qsub
    
