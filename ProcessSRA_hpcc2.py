@@ -223,8 +223,8 @@ if PE==1:
 	print ("Converting BAM to SAM")
 	os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/bam2sam.py %s/accepted_hits.bam"%(f_tophat_file))
 
-	print ("Filtering SAM to primary and unique reads")
-	os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/primary_and_unique_mapped_reads.py %s/accepted_hits.sam"%(f_tophat_file))
+	print ("Filtering SAM and get unique reads")
+	os.system("python /mnt/home/john3784/Github/RNAseq_pipeline/primary_and_unique_mapped_reads2.py %s/accepted_hits.sam %s"%(f_tophat_file, PE))
 
 else:
 	f_fastq = infile.split(".")[0]+".fastq"
@@ -281,4 +281,4 @@ else:
 	os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/bam2sam.py %s/accepted_hits.bam"%(f_tophat_file))
 
 	print ("Filtering SAM to primary and unique reads")
-	os.system("python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/primary_and_unique_mapped_reads.py %s/accepted_hits.sam"%(f_tophat_file))
+	os.system("python /mnt/home/john3784/Github/RNAseq_pipeline/primary_and_unique_mapped_reads2.py %s/accepted_hits.sam %s"%(f_tophat_file, PE))
