@@ -53,7 +53,7 @@ def main():
 	    print ("Error reading arguments, quitting!")
 	    sys.exit()
 	
-	oup = open("runcc_cufflinks_htseq", "w")
+	oup = open("%s/runcc_cufflinks_htseq" %(inp1, "w"))
 	get_sam_write_script(inp1, inp2, inp3, inp4, oup)
 
 if __name__ == "__main__":
