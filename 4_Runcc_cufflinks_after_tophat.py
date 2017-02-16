@@ -26,8 +26,8 @@ def get_sam_write_script(inp1, inp2, inp3, inp4, oup):
                 os.system("samtools view -bS %saccepted_hits.unique.sam > %saccepted_hits.unique.bam"%(filepath, filepath))
                 print ("sorting unique bam and convert back to sam")
                 os.system("samtools sort -O sam -T accepted_hits.unique.sorted -o %saccepted_hits.unique.sorted.sam -n %saccepted_hits.unique.bam"%(filepath, filepath))
-                print ("writing cufflinks script on sorted.unique.sam")
-                oup.write("module load cufflinks; cufflinks -p 1 -I 5000 -o %suniquecufflinks -G %s -b %s %saccepted_hits.unique.sorted.sam\n" %(filepath, inp2, inp3, filepath))
+                print ("writing cufflinks script on unique.sam")
+                oup.write("module load cufflinks; cufflinks -p 1 -I 5000 -o %suniquecufflinks -G %s -b %s %saccepted_hits.unique.sam\n" %(filepath, inp2, inp3, filepath))
                 print ("writing HTseq script on sorted.unique.sam")
                 oup.write("module load HTSeq; python -m HTSeq.scripts.count -m union -s no -t gene -i ID %saccepted_hits.unique.sorted.sam %s > %sHTSeqCount_%s.out\n" %(filepath, inp2, filepath, file1))
     else:
@@ -45,7 +45,7 @@ def main():
 	    inp1 = sys.argv[1] #folder including tophat files
             inp2 = sys.argv[2] #gff file
             inp3 = sys.argv[3] #genome.fa file
-            inp4 = int(sys.argv[5]) #SE (0), PE (1)
+            inp4 = int(sys.argv[4]) #SE (0), PE (1)
 
 
 	except:

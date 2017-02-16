@@ -31,7 +31,7 @@ def get_sam_write_script(inp1, inp2, inp3, inp4, oup):
             os.system("samtools sort -O sam -T accepted_hits.unique.sorted -o %saccepted_hits.unique.sorted.sam -n %saccepted_hits.unique.bam"%(filepath, filepath))
         
             print ("writing cufflinks script on sorted.unique.sam")
-            oup.write("module load cufflinks; cufflinks -p 1 -I 5000 -o %s_uniquecufflinks -G %s -b %s %s/accepted_hits.unique.sorted.sam\n" %(filepath, inp3, inp4, filepath))
+            oup.write("module load cufflinks; cufflinks -p 1 -I 5000 -o %suniquecufflinks -G %s -b %s %saccepted_hits.unique.sam\n" %(filepath, inp3, inp4, filepath))
            
             print ("writing HTseq on sorted.unique.sam")
             oup.write("module load HTSeq; python -m HTSeq.scripts.count -m union -s no -t gene -i ID -r name %saccepted_hits.unique.sorted.sam %s > %sHTSeqCount_%s.out\n"%(filepath, inp3, filepath, file1))
