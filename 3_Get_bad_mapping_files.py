@@ -16,16 +16,23 @@ def add_data_to_dict(inp,filename,D):
     for line in inp:
         line = clear_spaces(line)
         L= line.strip().split("\t")
+        percent = "not found"
+        percent2 = "not found"
         for x in L:
             if x == "overall":
                percent= L[0]
-               print (percent)
+               print filename, percent
                percent_final = float(percent.split("%")[0])
                #print (percent_final)
                if percent_final >= 80:
                    pass
                else:
                    D[filename]=str(percent_final)  
+            if x == "concordant":
+                percent2 = L[0]
+                #print "concordant pairs", percent2 #not sure if we need to do anything about this percentage/threshold?
+                print filename, "concordant", percent2
+                
 
 for dir in os.listdir(start_dir):
     if dir.endswith("_tophat"):
