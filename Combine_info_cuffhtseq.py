@@ -11,9 +11,9 @@ inp5 = threshold value of FPKM_conf_lo
 inp6 = Sample name file
 examples:
 	Cufflink:
-		python Combine_info_cuffhtseq.py Solanum_lycopersicum_GCF_000188115.3_S.lycopersicum.2.50_genomic.gff Solanum_lycopersicum_GCF__gene_get_rid_of.txt ./cufflink_results/ c 0 Sample_name.txt
+		python Combine_info_cuffhtseq.py /mnt/home/peipeiw/Documents/Pathway_prediction/Mapping/Solanum_lycopersicum_GCF_000188115.3_S.lycopersicum.2.50_genomic.gff /mnt/home/peipeiw/Documents/Pathway_prediction/Mapping/Solanum_lycopersicum_GCF__gene_get_rid_of.txt ./cufflink_results/ c 0 /mnt/home/peipeiw/Documents/Pathway_prediction/Mapping/Sample_name.txt
 	Htseq:
-		python Combine_info_cuffhtseq.py Solanum_lycopersicum_GCF_000188115.3_S.lycopersicum.2.50_genomic.gff Solanum_lycopersicum_GCF__gene_get_rid_of.txt htseq_results/ h 0 Sample_name.txt
+		python Combine_info_cuffhtseq.py /mnt/home/peipeiw/Documents/Pathway_prediction/Mapping/Solanum_lycopersicum_GCF_000188115.3_S.lycopersicum.2.50_genomic.gff /mnt/home/peipeiw/Documents/Pathway_prediction/Mapping/Solanum_lycopersicum_GCF__gene_get_rid_of.txt htseq_results/ h 0 /mnt/home/peipeiw/Documents/Pathway_prediction/Mapping/Sample_name.txt
 ''')
 
 #directory for rna-id --> gene-id
