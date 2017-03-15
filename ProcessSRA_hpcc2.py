@@ -177,31 +177,31 @@ if PE==1:
 	if not trim_headcrop == 0:
 		trimmomatic_command = trimmomatic_command + " HEADCROP:%s" % (trim_headcrop)
 	os.system(trimmomatic_command)
-	print ("    Deleting original fastq file:")
-	print ("    %s"%(f_fastq))
-	os.system("rm %s"%(f_fastq))
-	os.system("rm %s"%(r_fastq))
-	print ("Filtering trimmed reads")
-	# Filter trimmed reads
-	filter_command1 = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(f_fastq_trimmedP,min_filter_len,min_filter_phred)
-	filter_command2 = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(r_fastq_trimmedP,min_filter_len,min_filter_phred)
+#	print ("    Deleting original fastq file:")
+#	print ("    %s"%(f_fastq))
+	#os.system("rm %s"%(f_fastq))
+	#os.system("rm %s"%(r_fastq))
+#	print ("Filtering trimmed reads")
+#	# Filter trimmed reads
+#	filter_command1 = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(f_fastq_trimmedP,min_filter_len,min_filter_phred)
+#	filter_command2 = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(r_fastq_trimmedP,min_filter_len,min_filter_phred)
 
-	# print filter_command
-	os.system(filter_command1)
-	os.system(filter_command2)
-	# filtered_file = f_fastq_trimmed.replace("fastq","")+str(min_filter_len)+"_min_len."+str(min_filter_len)+"_min_phred.fastq"
-	filtered_file1 = f_fastq_trimmedP.replace(".fastq","")+".filtered.fastq"
-	filtered_file2 = r_fastq_trimmedP.replace(".fastq","")+".filtered.fastq"
-	print ("    Deleting trimmed fastq file:")
-	print ("    %s"%(f_fastq_trimmedP))
-	os.system("rm %s"%(f_fastq_trimmedP))
-	os.system("rm %s"%(r_fastq_trimmedP))
-        os.system("rm %s"%(f_fastq_trimmedU))
-        os.system("rm %s"%(r_fastq_trimmedU))
+#	# print filter_command
+#	os.system(filter_command1)
+#	os.system(filter_command2)
+#	# filtered_file = f_fastq_trimmed.replace("fastq","")+str(min_filter_len)+"_min_len."+str(min_filter_len)+"_min_phred.fastq"
+	filtered_file1 = f_fastq_trimmedP
+	filtered_file2 = r_fastq_trimmedP
+#	print ("    Deleting trimmed fastq file:")
+#	print ("    %s"%(f_fastq_trimmedP))
+	#os.system("rm %s"%(f_fastq_trimmedP))
+	#os.system("rm %s"%(r_fastq_trimmedP))
+        #os.system("rm %s"%(f_fastq_trimmedU))
+        #os.system("rm %s"%(r_fastq_trimmedU))
 
 	print ("Second fastQC")
-	f_fastq2 = filtered_file1
-	r_fastq2 = filtered_file2
+	f_fastq2 = f_fastq_trimmedP
+	r_fastq2 = r_fastq_trimmedP
 	fastqc_command1 = "fastqc -f fastq "+ f_fastq2
 	fastqc_command2 = "fastqc -f fastq "+ r_fastq2
 	os.system(fastqc_command1)
@@ -243,23 +243,23 @@ else:
 
 	# print trimmomatic_command
 	os.system(trimmomatic_command)
-	print ("    Deleting original fastq file:")
-	print ("    %s"%(f_fastq))
-	os.system("rm %s"%(f_fastq))
+#	print ("    Deleting original fastq file:")
+#	print ("    %s"%(f_fastq))
+#	#os.system("rm %s"%(f_fastq))
 
-	print ("Filtering trimmed reads")
-	# Filter trimmed reads
-	filter_command = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(f_fastq_trimmed,min_filter_len,min_filter_phred)
-	# print filter_command
-	os.system(filter_command)
+#	print ("Filtering trimmed reads")
+#	# Filter trimmed reads
+#	filter_command = "python /mnt/home/lloydjo1/scripts/A_Small_Read_Processing/filter_fastq.py -i %s -min %s -ave %s"%(f_fastq_trimmed,min_filter_len,min_filter_phred)
+#	# print filter_command
+#	os.system(filter_command)
 	# filtered_file = f_fastq_trimmed.replace("fastq","")+str(min_filter_len)+"_min_len."+str(min_filter_len)+"_min_phred.fastq"
-	filtered_file = f_fastq_trimmed.replace(".fastq","")+".filtered.fastq"
-	print ("    Deleting trimmed fastq file:")
-	print ("    %s"%(f_fastq_trimmed))
-	os.system("rm %s"%(f_fastq_trimmed))
+	filtered_file = f_fastq_trimmed
+#	print ("    Deleting trimmed fastq file:")
+#	print ("    %s"%(f_fastq_trimmed))
+#	#os.system("rm %s"%(f_fastq_trimmed))
 
 	print ("Second fastQC")
-	f_fastq2 = filtered_file
+	f_fastq2 = f_fastq_trimmed
 	fastqc_command = "fastqc -f fastq "+ f_fastq2
 	os.system(fastqc_command)
 
