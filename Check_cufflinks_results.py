@@ -8,6 +8,7 @@ inp2 = folder to save output cufflink and htseq results with SRR name
 
 ''')
 inp1 = sys.argv[1] #folder including cufflinks directories
+inp2 = sys.argv[2]
 
 os.chdir("%s" %inp1)
 oup = open("missing_cufflinks_results", "w")
