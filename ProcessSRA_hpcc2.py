@@ -6,7 +6,7 @@ import os
 print ('''
 inp1 = .sra file
 inp2 = bowtie index root name
-inp3 = paired (1) or single reads (0)
+inp3 = paired (1) or single reads (0) or paired processed as single (2)
 
 Optional Inputs:
 	-trim_threads = threads to use when running Trimmomatic (note: the actual number of threads used will be 1 + this value)
@@ -59,6 +59,8 @@ PE = int(sys.argv[3])
 # updating adapter_seq to include all universal adaptors, need to have these in wd
 if PE == 1:
 	adapter_seq = "all_PE_adapters.fa"
+elif PE == 2:
+        adapter_seq = "all_PE_adapters.fa"
 else:
 	adapter_seq = "all_SE_adapters.fa"
 trim_threads = 4
@@ -137,10 +139,16 @@ f_sra = infile
 print ("Dumping SRA file")
 if PE == 1:
 	dump_command = "fastq-dump --split-files "+f_sra
-else:
+	os.system(dump_command)
+elif PE == 2:
+	os.system("fastq-dump --split-files %s"%(f_sra))
+	
+
+elif PE == 0:
 	dump_command = "fastq-dump "+f_sra
+	os.system(dump_command)
 # print dump_command
-os.system(dump_command)
+
 
 print ("First fastQC")
 if PE == 1:
@@ -151,6 +159,15 @@ if PE == 1:
 	fastqc_command2 = "fastqc -f fastq "+ r_fastq
 	os.system(fastqc_command1)
 	os.system(fastqc_command2)
+elif PE == 2:
+        name = infile.split(".")[0]
+        f_fastq = infile.split(".")[0]+"_1.fastq"
+	r_fastq = infile.split(".")[0]+"_2.fastq"
+	print (infile, f_fastq)
+	os.system("mv %s %s.fastq" %(f_fastq, name))
+	fastqc_command = "fastqc -f fastq "+name+".fastq"
+	os.system(fastqc_command)
+	os.system("rm %s"%r_fastq)
 else:
 	f_fastq = infile.split(".")[0]+".fastq"
 	print (infile, f_fastq)

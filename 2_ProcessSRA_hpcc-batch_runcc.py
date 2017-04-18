@@ -6,7 +6,7 @@ print('''
 
 inp1 = file with list of SRA files
 inp2 = bowtie index base (full path)
-inp3 = SE (0) or PE (1)
+inp3 = SE (0) or PE (1) or paired processed as single (2)
 inp3 and on:
 	Any additional parameters for ProcessSRA_hpcc2.py
 	These will be appended exactly as they appear 
