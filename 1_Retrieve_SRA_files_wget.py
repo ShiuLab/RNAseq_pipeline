@@ -1,9 +1,9 @@
-print'''
+print('''
 inp1 - File with list of SRA file names
         Entries should be an NCBI "run" identifier
         These often start with "SRR"
         Entries can be comma-delimited or individual
-'''
+''')
 import os,sys,fn
 
 sra_list_file = sys.argv[1]
@@ -15,7 +15,7 @@ def retrieve_sra_file(file_name):
 reads/ByRun/sra/%s/%s/%s/%s" % (first_three,first_six,file_name,file_name+".sra"))
 
 sra_list = fn.file2list(sra_list_file)
-print sra_list
+print (sra_list)
 for row in sra_list:
         if not row.startswith("#"):
                 file_nms = row.split(",")
