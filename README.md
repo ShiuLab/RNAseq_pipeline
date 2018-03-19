@@ -106,4 +106,32 @@ HTseq count [to get counts of reads to each gene or exon] -> Edge R -> different
    output is a cufflinks/htseq runcc file
    
 2) submit cufflinks/htseq runcc file to the queue with qsub
+
+# Get differentially expressed genes
+
+This section will allow you to identify differentially regulated genes through edgeR
+
+1. go to R_studio
+
+2. check “edgeR.pdf” for info
+
+3. example R script
+
+
+   here I have 2 replicates for MOCK and 2 replicates for COR and combine the HTseq output files among these samples together.
+   
+        > counts = read.delim("HTSeqCount_combined.txt", header=F, row.names=1, sep=' ')
+        > group <- factor(c("mock","mock","cor","cor"))
+        > d <- DGEList(counts=counts,group=group)
+        > d <- calcNormFactors(d)
+        > d$sample
+        > d <- estimateCommonDisp(d)
+        > d <- estimateTagwiseDisp(d)
+        > de.com <- exactTest(d, pair=c("mock", "cor"))
+        > results <- topTags(de.com,n = length(d[,1]))
+        > write.table(as.matrix(results$table),file="outputFile.txt",sep="\t")
+        > pdf("edgeR-MA-plot.pdf")
+        > plot(results$table$logCPM,results$table$logFC,xlim=c(-3, 20), ylim=c(-12, 12), pch=20, cex=.3, col = ifelse( results$table$FDR < .1, "red", "black" ) )
+        > dev.off()
+
    
