@@ -133,5 +133,20 @@ This section will allow you to identify differentially regulated genes through e
         > pdf("edgeR-MA-plot.pdf")
         > plot(results$table$logCPM,results$table$logFC,xlim=c(-3, 20), ylim=c(-12, 12), pch=20, cex=.3, col = ifelse( results$table$FDR < .1, "red", "black" ) )
         > dev.off()
+        # making larger design table
+        > group <- factor(c(1,1,2,2,3,3))
+        > design <- model.matrix(~group)
+        > fit <- glmFit(y,design)
+        # To compare 2 vs 1:
+        > lrt.2vs1 <- glmLRT(fit,coef=2)
+        > topTags(lrt.2vs1)
+        # To compare 3 vs 1:
+        > lrt.3vs1 <- glmLRT(fit,coef=3)
+        # To compare 3 vs 2:
+        > lrt.3vs2 <- glmLRT(fit,contrast=c(0,-1,1))
+        # genes in all 3
+        > lrt <- glmLRT(fit,coef=2:3)
+        > topTags(lrt)
+
 
    
