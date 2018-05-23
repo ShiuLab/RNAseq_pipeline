@@ -39,25 +39,23 @@ def get_sam_write_script(inp1, inp2, inp3, inp4, oup):
                 oup.write("module load HTSeq; python -m HTSeq.scripts.count -m union -s no -t gene -i ID %saccepted_hits.unique.sam %s > %sHTSeqCount_%s.out\n" %(filepath, inp2, filepath, file1))
 
 def main():
-	if len(sys.argv) < 4 or "-h" in sys.argv:
-	    print_help()
-	    sys.exit()
+    if len(sys.argv) < 4 or "-h" in sys.argv:
+        print_help()
+        sys.exit()
+    
+    try:
+        inp1 = sys.argv[1] #folder including tophat files
+        inp2 = sys.argv[2] #gff file
+        inp3 = sys.argv[3] #genome.fa file
+        inp4 = sys.argv[4] #SE (0), PE (1)
+    except:
+        print_help()
+        print ("Error reading arguments, quitting!")
+        sys.exit()
 	
-	try:
-	    inp1 = sys.argv[1] #folder including tophat files
-            inp2 = sys.argv[2] #gff file
-            inp3 = sys.argv[3] #genome.fa file
-            inp4 = sys.argv[4] #SE (0), PE (1)
-
-
-	except:
-	    print_help()
-	    print ("Error reading arguments, quitting!")
-	    sys.exit()
-	
-	oup = open("%s/runcc_cufflinks_htseq" %(inp1), "w")
-	get_sam_write_script(inp1, inp2, inp3, inp4, oup)
-	oup.close()
+    oup = open("%s/runcc_cufflinks_htseq" %(inp1), "w")
+    get_sam_write_script(inp1, inp2, inp3, inp4, oup)
+    oup.close()
 
 if __name__ == "__main__":
 	main()        
